@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now())
+  name       String
+  email      String   @unique
+  password   String
+  events     Event[]
+}
+
+model Event {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String
+  date        DateTime @db.Date
+  from        DateTime @db.Time(6)
+  to          DateTime @db.Time(6)
+  userId      String?  @db.Uuid
+  User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
