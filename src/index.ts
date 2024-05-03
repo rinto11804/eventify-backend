@@ -4,6 +4,7 @@ import { userSchemas } from "./modules/user/user.schema";
 import fjwt, { FastifyJWT } from "@fastify/jwt";
 import fcookie from "@fastify/cookie";
 import cors from "@fastify/cors";
+import { eventSchema } from "./modules/event/event.schema";
 
 const server = fastify({ logger: true });
 
@@ -42,7 +43,7 @@ server
     }
   );
 
-for (const schema of [...userSchemas]) {
+for (const schema of [...userSchemas, ...eventSchema]) {
   server.addSchema(schema);
 }
 registerRoutes(server);

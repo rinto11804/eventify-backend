@@ -20,9 +20,8 @@ model Event {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String
   description String
-  date        DateTime @db.Date
-  from        DateTime @db.Time(6)
-  to          DateTime @db.Time(6)
+  from        DateTime @db.Date @default(now())
+  to          DateTime @db.Date
   userId      String?  @db.Uuid
   User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

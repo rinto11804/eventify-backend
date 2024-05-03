@@ -61,7 +61,7 @@ export async function loginUserHandler(
   reply.setCookie("access_token", token, {
     path: "/",
     httpOnly: true,
-    sameSite:"none"
+    sameSite: "none",
   });
 
   return { access_token: token };
