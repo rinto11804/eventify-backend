@@ -1,7 +1,6 @@
 import { prisma } from "../../storage/prisma";
 import { CreateUserBody } from "./user.schema";
 
-
 export async function createUser(data: CreateUserBody) {
   const user = await prisma.user.create({ data });
   return user;
@@ -10,24 +9,24 @@ export async function createUser(data: CreateUserBody) {
 export async function getUserById(id: string) {
   const user = await prisma.user.findUnique({
     where: {
-      id
+      id,
     },
     select: {
       name: true,
       email: true,
       created_at: true,
-    }
-  })
+    },
+  });
 
-  return user
+  return user;
 }
 
 export async function getUserByEmail(email: string) {
   const user = await prisma.user.findUnique({
     where: {
-      email
-    }
-  })
+      email,
+    },
+  });
 
-  return user
+  return user;
 }

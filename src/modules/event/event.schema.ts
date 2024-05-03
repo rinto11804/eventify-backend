@@ -1,7 +1,5 @@
-
-import { buildJsonSchemas } from 'fastify-zod'
-import { z } from 'zod'
-
+import { buildJsonSchemas } from "fastify-zod";
+import { z } from "zod";
 
 const createEventSchema = z.object({
   title: z.string().min(4),
@@ -9,16 +7,15 @@ const createEventSchema = z.object({
   date: z.string().date(),
   from: z.string().time(),
   to: z.string().time(),
-})
-
+});
 
 export const { schemas: eventSchema, $ref: $eventRef } = buildJsonSchemas(
   {
     createEventSchema,
   },
   {
-    $id: 'event'
+    $id: "event",
   }
-)
+);
 
-type CreateEventBody = z.infer<typeof createEventSchema>
+type CreateEventBody = z.infer<typeof createEventSchema>;
