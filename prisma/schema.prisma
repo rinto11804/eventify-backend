@@ -7,12 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+  SUPERUSER
+}
+
 model User {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at DateTime @default(now())
   name       String
   email      String   @unique
   password   String
+  role       Role     @default(USER)
   events     Event[]
 }
 
@@ -20,7 +27,7 @@ model Event {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String
   description String
-  from        DateTime @db.Date @default(now())
+  from        DateTime @default(now()) @db.Date
   to          DateTime @db.Date
   userId      String?  @db.Uuid
   User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)

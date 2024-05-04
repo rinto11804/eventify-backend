@@ -11,6 +11,7 @@ const createUserResponseSchema = z.object({
   id: z.string(),
   email: z.string(),
   name: z.string(),
+  role:z.string(),
 });
 
 const loginUserSchema = z.object({

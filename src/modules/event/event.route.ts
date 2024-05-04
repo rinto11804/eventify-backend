@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { $eventRef } from "./event.schema";
-import { createEventHandler } from "./event.controller";
+import { createEventHandler, deleteEventHandler } from "./event.controller";
 
 export async function eventRoutes(app: FastifyInstance) {
   app.post(
@@ -14,6 +14,11 @@ export async function eventRoutes(app: FastifyInstance) {
       },
       preHandler: [app.authenticate],
     },
-    createEventHandler
+    createEventHandler,
+  );
+  app.delete(
+    "/delete/:id",
+    { preHandler: app.authenticate },
+    deleteEventHandler,
   );
 }

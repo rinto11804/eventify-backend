@@ -1,23 +1,36 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CreateEventBody } from "./event.schema";
-import { createEvent } from "./event.service";
+import { createEvent, deleteEventById } from "./event.service";
 
 export async function createEventHandler(
   req: FastifyRequest<{ Body: CreateEventBody }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
-  console.log(req.user);
   const event = req.body;
-  const data = {
-    ...event,
-    userId: req.user.id,
-  };
+  const userId = req.user.id;
   try {
-    const res = await createEvent(data);
+    const res = await createEvent(event, userId);
     return reply.status(201).send({ message: res, error: false });
   } catch (e) {
     return reply
       .status(500)
-      .send({ message: "Event create failed", e, error: true });
+      .send({ message: "Event create failed", error: true });
+  }
+}
+
+export async function deleteEventHandler(
+  req: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply,
+) {
+  const { id } = req.params;
+  try {
+    await deleteEventById(id);
+    return reply
+      .status(200)
+      .send({ message: "Event deleted successfully", error: false });
+  } catch (e) {
+    return reply
+      .status(500)
+      .send({ message: "Event deletion failed", error: true });
   }
 }
