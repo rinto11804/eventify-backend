@@ -54,6 +54,7 @@ export async function loginUserHandler(
     id: user.id,
     email: user.email,
     name: user.name,
+    role: user.role,
   };
 
   const token = req.jwt.sign(payload);
@@ -67,7 +68,7 @@ export async function loginUserHandler(
   return { access_token: token };
 }
 
-export async function logout(req: FastifyRequest, reply: FastifyReply) {
+export async function logout(_req: FastifyRequest, reply: FastifyReply) {
   reply.clearCookie("access_token");
   return reply.send({ message: "Logout successful", error: false });
 }

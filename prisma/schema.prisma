@@ -21,14 +21,53 @@ model User {
   password   String
   role       Role     @default(USER)
   events     Event[]
+  forms      Form[]
 }
 
 model Event {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title       String
   description String
-  from        DateTime @default(now()) @db.Date
+  from        DateTime @db.Date
   to          DateTime @db.Date
   userId      String?  @db.Uuid
   User        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Answer {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  questionId String
+  Response   Response? @relation(fields: [responseId], references: [id])
+  responseId String?   @db.Uuid
+}
+
+model Response {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  Form    Form?     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId  String?   @db.Uuid
+  answers Answer[]
+}
+
+model Form {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String
+  questions   Question[]
+  responses   Response[]
+  User        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?    @db.Uuid
+}
+
+enum FieldType {
+  TEXT
+  SELECT
+  MULTI_SELECT
+}
+
+model Question {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description String
+  field_type  FieldType
+  Form        Form?     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId      String?   @db.Uuid
 }

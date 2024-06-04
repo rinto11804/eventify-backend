@@ -12,13 +12,13 @@ server.register(cors, {
   origin: "http://0.0.0.0:8000",
 });
 
-server.get("/healthcheck", async (req, reply) => {
+server.get("/healthcheck", async (_req, reply) => {
   reply.send({ message: "still alive", error: false });
 });
 
 server.register(fjwt, { secret: "this-is-a-secret" });
 
-server.addHook("preHandler", (req, reply, next) => {
+server.addHook("preHandler", (req, _reply, next) => {
   req.jwt = server.jwt;
   return next();
 });
