@@ -21,7 +21,7 @@ model User {
   password   String
   role       Role     @default(USER)
   events     Event[]
-  forms      Form[]
+   forms      Form[]
 }
 
 model Event {
